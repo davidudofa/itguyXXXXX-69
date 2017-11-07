@@ -1,0 +1,93 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>
+      {{itguy.name}}
+    </ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="dismiss()">
+        <span ion-text color="light" showWhen="ios">Cancel</span>
+        <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <ion-card>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/0/0c/Palace_of_Fine_Arts_San_Francisco_January_2014_003.jpg">
+
+    <ion-item>
+      <h2><b>{{itguy.name}}</b></h2>
+      <h3>{{itguy.email}}</h3>
+      <h3>{{itguy.phone}}</h3>
+    </ion-item>
+    <ion-item>
+      <ion-badge color="secondary"><ion-icon name="bulb"></ion-icon></ion-badge>
+    </ion-item>
+  </ion-card>
+  <ion-card *ngIf="openreview">
+      <ion-item class="newrate">
+        <ion-avatar item-start>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/0/0c/Palace_of_Fine_Arts_San_Francisco_January_2014_003.jpg">
+        </ion-avatar>
+        <h3>{{selfreview.rev_name}}</h3>
+        <rating [(ngModel)]="selfreview.rating"
+            readOnly="true"
+            max="5"
+            emptyStarIconName="star-outline"
+            halfStarIconName="star-half"
+            starIconName="star"
+            nullable="false"></rating>
+            <p><small>{{selfreview.message}}</small></p>
+            <p style='float:right;'>
+              <button clear small (click)="deletereview()"><ion-icon name="trash"></ion-icon></button> <button clear small (click)="openreview = false"><ion-icon name="create"></ion-icon></button>
+            </p>
+      </ion-item>
+  </ion-card>
+      <ion-card *ngIf="!openreview">
+        <span  padding>Rate this IT-Guy</span>
+        <ion-item class="newrate"><rating [(ngModel)]="selfreview.rating"
+            readOnly="false"
+            max="5"
+            emptyStarIconName="star-outline"
+            halfStarIconName="star-half"
+            starIconName="star"
+            nullable="false"></rating></ion-item>
+
+            <ion-item><ion-input [(ngModel)]="selfreview.message" name="revmsg" placeholder="What do you think"></ion-input></ion-item>
+        <ion-item><button ion-button clear small style='float:right;' (click)="ratereview();" >Submit</button></ion-item>
+      </ion-card>
+    <ion-card>
+      <ion-item class='newrate'>
+        <h1 item-start>{{itguy.rating}}</h1>
+        <rating [(ngModel)]="itguy.rating"
+        readOnly="true"
+        max="5"
+        emptyStarIconName="star-outline"
+        halfStarIconName="star-half"
+        starIconName="star"
+        nullable="false"></rating>
+    </ion-item>
+  </ion-card>
+    <ion-list>
+      <ion-item *ngFor="let review of reviews | slice:0:3; let i=index" class='statrating'>
+        <ion-avatar item-start>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/0/0c/Palace_of_Fine_Arts_San_Francisco_January_2014_003.jpg">
+        </ion-avatar>
+        <b><small>{{review.rev_name}}</small></b>
+        <rating [(ngModel)]="review.rating"
+            readOnly="true"
+            max="5"
+            emptyStarIconName="star-outline"
+            halfStarIconName="star-half"
+            starIconName="star"
+            nullable="false"></rating>
+        <small>{{review.message}}</small>
+      </ion-item>
+      <ion-item  *ngIf="viewall">
+        <button ion-button clear (click)="openreviews(reviews, itguy.rating)">View all</button>
+    </ion-item>
+    </ion-list>
+  <ion-card>
+    <ion-card-header>TIPS/TRICKS</ion-card-header>
+  </ion-card>
+</ion-content>

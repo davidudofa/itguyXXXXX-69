@@ -1,0 +1,47 @@
+<!--
+  Generated template for the AppointmentsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title>appointments</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+    <ion-searchbar [(ngModel)]="searchParam" ></ion-searchbar>
+
+    <ion-fab right bottom>
+      <button ion-fab mini (click)="newAppointment();"><ion-icon name="add"></ion-icon></button>
+    </ion-fab>
+  <ng-container>
+  <section id="cd-timeline" class="cd-container">
+          <div *ngFor="let monthlyGroup of monthWiseGroup">
+            <div class="cd-timeline-block">
+              <div class="cd-timeline-icon ">
+                <span class="ion-imsage timelineIscon">
+                    <small><b>{{monthlyGroup.month}}</b></small></span>
+              </div>
+              <!-- cd-timeline-img -->
+              <div class="cd-timeline-content calm" *ngFor="let item of monthlyGroup.items" (click)="openModal(item);">
+                <ion-card>
+                  <ion-card-header>
+                    <h2>{{item.client_name}}</h2>
+                    <small>{{item.client_mail}} <br/> {{item.client_phone}}</small>
+                  </ion-card-header>
+                  <ion-card-content>
+                    <h3>{{item.book_date | date: "EEE MMM d"}} | {{item.time}}</h3>
+                    <p>{{item.details}}</p>
+                  </ion-card-content>
+                </ion-card>
+              </div>
+            </div>
+          </div>
+        </section>
+  </ng-container>
+</ion-content>

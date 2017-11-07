@@ -1,0 +1,16 @@
+page-profile {
+  .newrate {
+    .rating{
+      padding-left:0px;
+    }
+    ul {
+      &.rating li {
+        color:green;
+        ion-icon {
+          font-size: 15px;
+        }
+      }
+    }
+  }
+
+}

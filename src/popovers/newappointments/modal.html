@@ -1,0 +1,88 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>
+      New Appointment
+    </ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="dismiss()">
+        <span ion-text color="light" showWhen="ios">Cancel</span>
+        <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <div *ngIf="noitguy">
+      <ion-searchbar #search (keyup)='0'></ion-searchbar>
+      <ion-card id="itguylist">
+        <ion-list>
+          <ion-item *ngFor="let itguy of (itguys | searchFilter: search.value )" (click)="setitguy(itguy)">
+            <ion-avatar item-start>
+              <img src="img/avatar-cher.png">
+            </ion-avatar>
+            <h2>{{itguy.name}}</h2>
+            <p>{{itguy.category}}</p>
+          </ion-item>
+        </ion-list>
+      </ion-card>
+    </div>
+    <ion-slides *ngIf="!noitguy" #newappointSlider style="position:fixed">
+    <ion-slide>
+      <form #newappointForm1="ngForm">
+      <ion-card>
+        <ion-card-header>
+          <h2>When to Meet</h2>
+        </ion-card-header>
+        <ion-item>
+          <ion-label ><ion-icon name="calendar"></ion-icon></ion-label>
+          <ion-datetime displayFormat="DDD MMM DD" pickerFormat="YYYY MM DD" name="appointdate" [(ngModel)] = "newappoint.book_date"></ion-datetime>
+       </ion-item>
+      <ion-item>
+       <ion-label><ion-icon name="time"></ion-icon></ion-label>
+       <ion-datetime pickerFormat="h mm A" displayFormat="h:mm A" name="appointtime" [(ngModel)] = "newappoint.time"></ion-datetime>
+      </ion-item>
+      </ion-card>
+      <ion-card>
+        <ion-card-header>Where to meet</ion-card-header>
+        <ion-item>
+          <ion-label><ion-icon name="map"></ion-icon></ion-label>
+            <ion-input name="appointvenue" [(ngModel)] = "newappoint.venue" required placeholder="Meeting Venue"></ion-input>
+        </ion-item>
+        <em style="color:orange;">Always setup meetings in a public and open place</em>
+      </ion-card>
+      <ion-row>
+        <ion-col *ngIf="noitguy" col-6>
+          <button ion-button class="submit-btn" (click)="prev()"><ion-icon name="arrow-back"></ion-icon> &nbsp;Back</button>
+          </ion-col>
+        <ion-col class="signup-col">
+          <button ion-button class="submit-btn" [disabled]="!newappointForm1.form.valid" (click)="whennext()">Next <ion-icon name="arrow-forward"></ion-icon></button>
+        </ion-col>
+      </ion-row>
+    </form>
+    </ion-slide>
+
+      <ion-slide>
+        <form #newappointForm2="ngForm">
+        <ion-card>
+          <ion-card-header>
+            <h2>Details</h2>
+          </ion-card-header>
+          <ion-item>
+            <ion-label ><ion-icon name="create"></ion-icon></ion-label>
+            <ion-input name="appointdetails" [(ngModel)] = "newappoint.details" placeholder='Details on meeting' required></ion-input>
+         </ion-item>
+        </ion-card>
+        <ion-row>
+          <ion-col col-6>
+            <button ion-button class="submit-btn" (click)="prev()"><ion-icon name="arrow-back"></ion-icon> &nbsp;Back</button>
+            </ion-col>
+            <ion-col col-6>
+            <button ion-button full color="primary" [disabled]="!newappointForm2.form.valid" (click)="bookrequest(newappoint)">Book Request</button>
+          </ion-col>
+        </ion-row>
+      </form>
+      </ion-slide>
+</ion-slides>
+
+</ion-content>

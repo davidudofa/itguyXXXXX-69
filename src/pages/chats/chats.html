@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>Chats/Messages</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <ion-searchbar ></ion-searchbar>
+  <ion-list>
+    <ion-list-header>
+      Recent Conversations
+    </ion-list-header>
+    <a ion-item *ngFor="let chat of chats" (click)="openModal(chat)" >
+      <ion-avatar item-start>
+        <img src="https://yt3.ggpht.com/-q9xUESoxnl0/AAAAAAAAAAI/AAAAAAAAAAA/vddTZUzLWJ0/s900-c-k-no-mo-rj-c0xffffff/photo.jpg">
+      </ion-avatar>
+      <h2>{{chat.name}}</h2>
+      <p>{{chat.email}}</p>
+    </a>
+
+  </ion-list> 
+</ion-content>

@@ -1,5 +1,9 @@
-<ion-tabs>
-  <ion-tab [root]="tab1Root" tabTitle="Home" tabIcon="home"></ion-tab>
-  <ion-tab [root]="tab2Root" tabTitle="About" tabIcon="information-circle"></ion-tab>
-  <ion-tab [root]="tab3Root" tabTitle="Contact" tabIcon="contacts"></ion-tab>
-</ion-tabs>
+<ion-content>
+  <ion-tabs >
+    <ion-tab tabIcon="home" tabTitle="Home" [root]="tab1"></ion-tab>
+    <ion-tab tabIcon="chatbubbles" tabBadge="{{newChats}}" tabBadgeStyle="danger" tabTitle="Chats" [root]="tab2"></ion-tab>
+    <ion-tab tabIcon="calendar" tabTitle="Requests" tabBadge="{{newAppointments}}" tabBadgeStyle="danger" [root]="tab3"></ion-tab>
+    <ion-tab tabIcon="bulb" tabTitle="Tips/Tricks" tabBadge="{{newBlog}}" tabBadgeStyle="danger" [root]="tab4"></ion-tab>
+    <ion-tab tabIcon="contact" tabTitle="Profile" [root]="tab5"></ion-tab>
+  </ion-tabs>
+</ion-content>
