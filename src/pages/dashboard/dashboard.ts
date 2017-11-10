@@ -46,12 +46,12 @@ export class DashboardPage {
     this.newchat.email = chat.email;
     let modal = this.modalCtrl.create(ModalContentPage, {'chatData': this.newchat});
     modal.onDidDismiss(()=> {
-      this.ionViewWillLoad();
+      this.ionViewWillEnter();
     })
     modal.present();
   }
 
-  ionViewWillLoad() {
+  ionViewWillEnter() {
     this.itguy = this.userservice.getItGuy();
     this.username = this.userservice.getUserName();
     this.usermail = this.userservice.getUserMail();
@@ -79,7 +79,8 @@ export class DashboardPage {
     let alert = this.toastCtrl.create({
       message: text,
       showCloseButton: true,
-      closeButtonText: 'Ok'
+      closeButtonText: 'Ok',
+      duration: 3000
     });
     alert.present();
   }

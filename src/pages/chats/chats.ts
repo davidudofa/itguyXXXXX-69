@@ -68,7 +68,8 @@ export class ChatsPage {
     let alert = this.toastCtrl.create({
       message: text,
       showCloseButton: true,
-      closeButtonText: 'Ok'
+      closeButtonText: 'Ok',
+      duration: 3000
     });
     alert.present();
   }

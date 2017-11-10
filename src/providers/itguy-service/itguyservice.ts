@@ -37,8 +37,8 @@ export class ItGuyService {
     //console.log('Hello AuthServiceProvider Provider');
   }
 
-  //private API = 'http://apps.artsinscience.com/ITGUY/api';
-  private API = 'http://localhost/ITGUY/api';
+  private API = 'http://apps.artsinscience.com/ITGUY/api';
+  //private API = 'http://localhost/ITGUY/api';
 
   /*public itguys() {
         return this.http.get(this.API+'/itguys')

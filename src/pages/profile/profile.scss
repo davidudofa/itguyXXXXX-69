@@ -13,4 +13,27 @@ page-profile {
     }
   }
 
+  .statrating {
+  .rating{
+    padding-left:0px;
+    padding-top:0px;
+  }
+
+  ul {
+  padding: 0px;
+
+  &.rating li {
+    display: inline;
+    border: 0px;
+    padding: 0px 0px !important;
+    background: none;
+    color: grey;
+
+    ion-icon {
+      font-size: 10px;
+    }
+  }
+}
+}
+
 }

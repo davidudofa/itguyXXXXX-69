@@ -21,6 +21,7 @@ export class LoginPage {
   userMail: any;
   loading: Loading;
   registerCredentials = {email: '', password: ''};
+  showPassword = false;
 
 
   constructor(private nav: NavController, private auth: AuthServiceProvider, private toastCtrl: ToastController, private loadingCtrl: LoadingController, private userservice: UserprofileService) {
@@ -30,7 +31,7 @@ export class LoginPage {
     this.nav.push('RegisterPage');
   }
 
-  public login() {  
+  public login() {
     this.showLoading()
     this.auth.login(this.registerCredentials).subscribe(allowed => {
       if (allowed && allowed.status != 'Failed') {
@@ -68,9 +69,18 @@ export class LoginPage {
     let alert = this.toastCtrl.create({
       message: text,
       showCloseButton: true,
-      closeButtonText: 'Ok'
+      closeButtonText: 'Ok',
+      duration: 3000
     });
     alert.present();
+  }
+
+  doReveal(evt){
+    if (evt === 'hide'){
+      this.showPassword = false;
+    }else{
+      this.showPassword = true;
+    }
   }
 
   ionViewDidLoad() {

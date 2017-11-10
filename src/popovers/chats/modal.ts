@@ -59,7 +59,8 @@ export class ModalContentPage {
     let alert = this.toastCtrl.create({
       message: text,
       showCloseButton: true,
-      closeButtonText: 'Ok'
+      closeButtonText: 'Ok',
+      duration: 3000
     });
     alert.present();
   }
@@ -131,8 +132,6 @@ export class ModalContentPage {
        let newMsg: ChatMessage = {
            id: Date.now().toString(),
            from_mail: this.user.mail,
-           from_name: this.user.name,
-           to_name: this.toUser.name,
            to_mail: this.toUser.mail,
            message: this.editorMsg,
            time: Date.now(),

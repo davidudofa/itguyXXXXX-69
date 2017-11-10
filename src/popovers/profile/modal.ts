@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { Platform, NavParams, ViewController, ToastController, ModalController, ActionSheetController } from 'ionic-angular';
-import { UserprofileService } from '../../providers/appservice/appservice';
+import { Platform, NavParams, ViewController, ToastController, ActionSheetController } from 'ionic-angular';
 import { ProfileService } from '../../providers/profile-service/profileservice';
 
 
@@ -15,15 +14,14 @@ export class ModalProfilePage {
   categories: any=[];
   tags: any = [];
   itguyprofile = false;
+  alltags: any = [];
 
   constructor(
     public platform: Platform,
     public params: NavParams,
     public viewCtrl: ViewController,
     private toastCtrl: ToastController,
-    private userService: UserprofileService,
     private profileservice: ProfileService,
-    private modalCtrl: ModalController,
     private actionSheetCtrl: ActionSheetController
   ) {
 
@@ -39,20 +37,22 @@ export class ModalProfilePage {
       this.profile = this.params.get('profile');
       var itguy = this.profile.id;
         if (this.profile.type === 'IT Guy'){
+          this.showError("Update profile photo, specialty and skills... Your skills indexes your profile for search");
           this.itguyprofile = true;
+
+          this.profileservice.getCategories().subscribe(response =>{
+            this.categories = response;
+          }, error =>{
+            this.showError("There was a problem connecting to the server. please try again");
+          })
+
+          this.profileservice.getSkills(itguy).subscribe(resp=>{
+            if (resp != null){
+              var alltags = resp.skillname;
+              this.tags = alltags.split(",");
+            }
+          })
         }
-
-        this.profileservice.getCategories().subscribe(response =>{
-          this.categories = response;
-        }, error =>{
-          this.showError("There was a problem connecting to the server. pleasetry again");
-        })
-
-        this.profileservice.getSkills(itguy).subscribe(response=>{
-          for (var tag in response){
-            this.tags[tag] = response[tag].skillname;
-          }
-        })
 
     }
 
@@ -86,10 +86,37 @@ export class ModalProfilePage {
     let alert = this.toastCtrl.create({
       message: text,
       showCloseButton: true,
-      closeButtonText: 'Ok'
+      closeButtonText: 'Ok',
+      duration: 3000
     });
     alert.present();
   }
+
+  updateSpecialty(val){
+    this.profileservice.updateCategory(val, this.profile.id).subscribe(response=>{
+        this.showError("Specialty updated");
+    }, error=>{
+      this.showError("There was a problem connecting to the server. please try again");
+    })
+  }
+
+  updateskills(tags){
+    var skills = tags.join(",");
+    this.profileservice.updateSkills(skills, this.profile.id).subscribe(response=>{
+        this.showError("Skill updated");
+    }, error=>{
+      this.showError("There was a problem connecting to the server. please try again");
+    });
+  }
+
+  updateinfo(profile){
+    this.profileservice.updateProfile(this.profile).subscribe(response=>{
+      this.showError("Profile updated");
+    }, error=>{
+      this.showError("There was a problem connecting to the server. please try again");
+    })
+  }
+
 
   dismiss(){
     this.viewCtrl.dismiss();

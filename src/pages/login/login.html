@@ -20,7 +20,14 @@
             </ion-item>
 
             <ion-item>
-              <ion-input type="password" placeholder="Password" name="password" [(ngModel)]="registerCredentials.password" required></ion-input>
+              <ion-input *ngIf="showPassword" type="text" placeholder="Password" name="password" [(ngModel)]="registerCredentials.password" autocomplete="false" minlength="5" required></ion-input>
+              <button ion-button *ngIf="showPassword" item-right clear (click)="doReveal('hide')">
+                  <ion-icon name="eye-off"></ion-icon>
+              </button>
+              <ion-input *ngIf="!showPassword" type="password" placeholder="Choose Password" name="password" [(ngModel)]="registerCredentials.password" autocomplete="false" minlength="5" required></ion-input>
+              <button ion-button *ngIf="!showPassword" item-right clear (click)="doReveal('show')">
+                  <ion-icon name="eye"></ion-icon>
+              </button>
             </ion-item>
 
           </ion-list>

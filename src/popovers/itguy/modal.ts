@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
-import { Platform, NavParams, ViewController, ToastController, ModalController } from 'ionic-angular';
+import { Platform, NavParams, NavController, ViewController, ToastController, ModalController } from 'ionic-angular';
 import { UserprofileService } from '../../providers/appservice/appservice';
 import { ItGuyService } from '../../providers/itguy-service/itguyservice';
+import { ProfileService } from '../../providers/profile-service/profileservice';
 import { ModalReviewPage } from '../../popovers/reviews/modal';
+import { ModalContentPage } from '../../popovers/chats/modal';
+import { ModalAppointPage } from '../../popovers/newappointments/modal';
 
 
 @Component({
@@ -18,15 +21,19 @@ export class ModalItguyPage {
   otherreview: any =[];
   openreview = false;
   viewall = false;
+  tags: any=[];
+  newchat: any=[];
 
   constructor(
     public platform: Platform,
     public params: NavParams,
+    public nav: NavController,
     public viewCtrl: ViewController,
     private toastCtrl: ToastController,
     private userService: UserprofileService,
     private itguyservice: ItGuyService,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private profileservice: ProfileService
   ) {
 
   }
@@ -89,6 +96,13 @@ export class ModalItguyPage {
         error => {
           this.showError("Sorry we couldn't connect to the server. Please try again");
         });
+
+        this.profileservice.getSkills(this.itguy.id).subscribe(resp=>{
+          if (resp != null){
+            var alltags = resp.skillname;
+            this.tags = alltags.split(",");
+          }
+        })
     }
 
     openreviews(reviews, rating){
@@ -104,9 +118,26 @@ export class ModalItguyPage {
     let alert = this.toastCtrl.create({
       message: text,
       showCloseButton: true,
-      closeButtonText: 'Ok'
+      closeButtonText: 'Ok',
+      duration: 3000
     });
     alert.present();
+  }
+
+
+  newAppointment(){
+    let newmodal = this.modalCtrl.create(ModalAppointPage, {'itguy': this.itguy});
+    newmodal.present();
+  }
+
+  openChat() {
+    this.newchat.name = this.itguy.name;
+    this.newchat.email = this.itguy.email;
+    let modal = this.modalCtrl.create(ModalContentPage, {'chatData': this.newchat});
+    modal.onDidDismiss(()=> {
+      this.ionViewWillLoad();
+    })
+    modal.present();
   }
 
   dismiss(){

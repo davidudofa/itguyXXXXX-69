@@ -28,8 +28,8 @@ export class AuthServiceProvider {
   constructor(private http: Http) {
   }
 
-  private API = 'http://localhost/ITGUY/api';
-  //private API = 'http://apps.artsinscience.com/ITGUY/api';
+  //private API = 'http://localhost/ITGUY/api';
+  private API = 'http://apps.artsinscience.com/ITGUY/api';
 
   public login(credentials) {
     if (credentials.email === null || credentials.password === null) {

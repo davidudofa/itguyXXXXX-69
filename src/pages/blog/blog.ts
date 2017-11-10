@@ -20,7 +20,7 @@ export class BlogPage {
   }
 
   ionViewDidLoad() {
-    this.title = "Tips and Tricks";
+    this.title = "Hacks";
   }
 
 }

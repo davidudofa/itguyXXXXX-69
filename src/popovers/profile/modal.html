@@ -35,20 +35,20 @@
       </ion-item>
     </ion-list>
           <div padding>
-            <button ion-button block>Save</button>
+            <button ion-button block (click)="updateinfo(profile);">Save</button>
           </div>
   </ion-card>
   <ion-card *ngIf="itguyprofile">
     <ion-list>
   <ion-item>
     <ion-label>Specialty</ion-label>
-    <ion-select [(ngModel)]="profile.specialization">
+    <ion-select [(ngModel)]="profile.specialization" (ngModelChange)="updateSpecialty(profile.specialization)">
       <ion-option *ngFor="let category of categories" [value]="category.id">{{category.category}}</ion-option>
     </ion-select>
   </ion-item><hr>
   <ion-item>
     <h2>Skills</h2><hr/>
-    <ion-tags-input [(ngModel)]="tags" [placeholder]="'add skills'" [once]="'true'" [mode]="'secondary'" [separatorStr]="','" [canBackspaceRemove]="true" [canEnterAdd]="true" [maxTags]="5"></ion-tags-input>
+    <ion-tags-input [(ngModel)]="tags" [placeholder]="'add skills'" [once]="'true'" [mode]="'secondary'" [separatorStr]="','" [canBackspaceRemove]="true" [canEnterAdd]="true" [maxTags]="5" (onChange)="updateskills(tags)"></ion-tags-input>
   </ion-item>
 </ion-list>
   </ion-card>

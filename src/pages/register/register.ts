@@ -1,7 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, ToastController, IonicPage, LoadingController, Loading } from 'ionic-angular';
+import { NavController, ToastController, IonicPage, LoadingController, Loading, ModalController } from 'ionic-angular';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 import { UserprofileService } from '../../providers/appservice/appservice';
+import { ModalProfilePage } from '../../popovers/profile/modal';
+import { ProfileService } from '../../providers/profile-service/profileservice';
 
 @IonicPage()
 @Component({
@@ -13,7 +15,12 @@ export class RegisterPage {
   @ViewChild('signupSlider') signupSlider: any;
   createSuccess = false;
   registerCredentials = {regname: '', regmail: '', regphone: '', regas:'', regusername: '', regpass: ''};
-  constructor(private nav: NavController, private auth: AuthServiceProvider, private alertCtrl: ToastController, private loadingCtrl: LoadingController, private userservice: UserprofileService) {}
+  showPassword = false;
+  profile: any = [];
+  itguy: any;
+  constructor(private nav: NavController, private auth: AuthServiceProvider, private alertCtrl: ToastController, private loadingCtrl: LoadingController, private userservice: UserprofileService,
+  private modalCtrl: ModalController,
+  private profileservice: ProfileService) {}
 
   ionViewDidLoad() {
     this.signupSlider.lockSwipes(true);
@@ -92,6 +99,39 @@ export class RegisterPage {
     this.checkUserName(this.registerCredentials.regusername, this.registerCredentials.regpass);
   }
 
+  doReveal(evt){
+    if (evt === 'hide'){
+      this.showPassword = false;
+    }else{
+      this.showPassword = true;
+    }
+  }
+
+  editprofile(itguy){
+    //this.itguy = this.userservice.getItGuy();
+    this.profileservice.profile(itguy).subscribe(response=> {
+      this.profile = response;
+      if (response.rating===null){
+        response.rating = '0';
+      }else{
+        response.rating = Math.round(response.rating * 10)/10;
+      }
+      if (response.itguy === '0'){
+        response.type = "Customer";
+      }else{
+        response.type = "IT Guy";
+      }
+
+      let newmodal = this.modalCtrl.create(ModalProfilePage, {'profile': response});
+      newmodal.onDidDismiss(()=> {
+        this.nav.push('TabsPage');
+      })
+      newmodal.present();
+    }, error=>{
+      this.showPopup("Error!", "There was a problem connecting to the server. please try again");
+    });
+  }
+
    doRegister() {
     this.showLoading()
     this.auth.register(this.registerCredentials).subscribe(allowed => {
@@ -108,7 +148,11 @@ export class RegisterPage {
         localStorage.setItem('userName', allowed.data.regusername);
         localStorage.setItem('userMail', allowed.data.regmail);
         localStorage.setItem('userPhone', allowed.data.regphone);
-        this.nav.push('TabsPage');
+        if (this.registerCredentials.regas === 'customer'){
+          this.nav.push('TabsPage');
+        }else{
+          this.editprofile(allowed.data.itguy);
+        }
       } else {
         this.hideLoading();
         this.showPopup("Error!", "We are sorry we cannot register you at this time. Please try again");
@@ -138,7 +182,8 @@ export class RegisterPage {
       message: text,
       showCloseButton: true,
       closeButtonText: 'Ok',
-      position: 'middle'
+      position: 'middle',
+      duration: 3000
     });
     alert.present();
   }

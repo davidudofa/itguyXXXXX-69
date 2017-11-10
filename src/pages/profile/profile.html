@@ -34,6 +34,7 @@
   </ion-card>
   <ion-card  *ngIf="!customer">
     <ion-item>
+      <button ion-button item-right small clear icon-only (click)="editprofile(profile)"><ion-icon name="create"></ion-icon></button>
       <h2>{{profile.category}}</h2><hr/>
       <ion-tags-input [(ngModel)]="tags" [readonly]="'true'" [once]="'true'" [mode]="'secondary'" [separatorStr]="','"></ion-tags-input>
     </ion-item>
@@ -47,6 +48,30 @@
             starIconName="star"
             nullable="false"></rating>
     </ion-item>
+  </ion-card>
+  <ion-card  *ngIf="!customer">
+    <ion-card-header>
+      <h2>Reviews</h2><hr/>
+    </ion-card-header>
+      <ion-list>
+        <ion-item *ngFor="let review of reviews | slice:0:3; let i=index" class='statrating'>
+          <ion-avatar item-start>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/0/0c/Palace_of_Fine_Arts_San_Francisco_January_2014_003.jpg">
+          </ion-avatar>
+          <b><small>{{review.rev_name}}</small></b>
+          <rating [(ngModel)]="review.rating"
+              readOnly="true"
+              max="5"
+              emptyStarIconName="star-outline"
+              halfStarIconName="star-half"
+              starIconName="star"
+              nullable="false"></rating>
+          <small>{{review.message}}</small>
+        </ion-item>
+        <ion-item  *ngIf="viewall">
+          <button ion-button clear (click)="openreviews(reviews, profile.rating)">View all</button>
+      </ion-item>
+      </ion-list>
   </ion-card>
 
   <ion-card  *ngIf="!customer">

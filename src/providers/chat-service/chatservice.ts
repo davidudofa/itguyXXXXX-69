@@ -14,8 +14,6 @@ import 'rxjs/add/operator/toPromise';
 export class ChatMessage {
     id: string;
     from_mail: string;
-    from_name: string;
-    to_name: string;
     to_mail: string;
     message: string;
     time: number | string;
@@ -35,8 +33,8 @@ export class ChatServiceProvider {
   constructor(private http: Http, public events: Events) {
   }
 
-  //private API = 'http://apps.artsinscience.com/ITGUY/api';
-  private API = 'http://localhost/ITGUY/api';
+  private API = 'http://apps.artsinscience.com/ITGUY/api';
+  //private API = 'http://localhost/ITGUY/api';
 
   public chats(user) {
     if (user === null) {
@@ -59,7 +57,7 @@ export class ChatServiceProvider {
     }
 
     public mockNewMsg(msg: ChatMessage): Observable<ChatMessage> {
-        return this.http.get(this.API+'/newchat?from_name='+msg.from_name+'&from_mail='+msg.from_mail+'&to_name='+msg.to_name+'&to_mail='+msg.to_mail+'&message='+encodeURI(this.enc_ur(msg.message))+'&status=1').map(res => res.json()
+        return this.http.get(this.API+'/newchat?from_mail='+msg.from_mail+'&to_mail='+msg.to_mail+'&message='+encodeURI(this.enc_ur(msg.message))+'&status=1').map(res => res.json()
         );
           //.then(() => this.events.publish('chat:received', msg, Date.now()));
 

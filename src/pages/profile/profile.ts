@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, PopoverController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, PopoverController, ToastController } from 'ionic-angular';
 import { ProfileService } from '../../providers/profile-service/profileservice';
 import { UserprofileService } from '../../providers/appservice/appservice';
 import { ModalProfilePage } from '../../popovers/profile/modal';
 import { EditReviewContentPage } from '../../popovers/dashboard/editreview';
+import { ModalReviewPage } from '../../popovers/reviews/modal';
+import { ItGuyService } from '../../providers/itguy-service/itguyservice';
 
 /**
  * Generated class for the ProfilePage page.
@@ -23,13 +25,17 @@ export class ProfilePage {
   profile: any = [];
   customer = false;
   tags: any = [];
+  reviews: any=[];
+  viewall = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public profileservice: ProfileService, public userservice: UserprofileService,
   public modalCtrl: ModalController,
-  public popoverCtrl: PopoverController) {
+  public popoverCtrl: PopoverController,
+  public toastCtrl: ToastController,
+  public itguyservice: ItGuyService) {
   }
 
-  ionViewWillLoad() {
+  ionViewDidEnter() {
     this.title = "Profile Page";
     this.itguy = this.userservice.getItGuy();
     this.profileservice.profile(this.itguy).subscribe(response=> {
@@ -45,29 +51,58 @@ export class ProfilePage {
       }else{
         this.customer = false;
         this.profile.type = "IT Guy";
+        this.profileservice.getSkills(this.itguy).subscribe(resp=>{
+          if (resp != null){
+            var alltags = resp.skillname;
+            this.tags = alltags.split(",");
+          }
+        });
+        this.itguyservice.reviews(this.itguy).subscribe(response2 => {
+          if (response2 && response2.status != 'Failed') {
+            var usermail = this.userservice.getUserMail();
+            this.reviews = response2.filter(function(element){ return element.rev_mail != usermail });
+            if (response2.length >= 2){
+              this.viewall = true;
+            }
+          }
+        },
+          error => {
+            this.showError("Sorry we couldn't connect to the server. Please try again");
+          });
         //get tags
         //get tips and tricks
         // get ratings
         // get requests
       }
     }, error=>{
-      console.log(error);
+      this.showError("There was a problem connecting to the server. please try again");
     })
 
-    this.profileservice.getSkills(this.itguy).subscribe(response=>{
-      for (var tag in response){
-        this.tags[tag] = response[tag].skillname;
-      }
-      console.log(this.tags);
-    })
   }
 
   openmore(myEvent, profile){
-    console.log(profile);
-    let popover = this.popoverCtrl.create(EditReviewContentPage, {'profile': profile});
+    let popover = this.popoverCtrl.create(EditReviewContentPage, {'profile':profile});
     popover.present({
       ev: myEvent
     });
+  }
+
+  openreviews(reviews, rating){
+    let modal = this.modalCtrl.create(ModalReviewPage, {'reviews': reviews, 'rating':rating});
+    modal.onDidDismiss(()=> {
+      this.ionViewDidEnter();
+    })
+    modal.present();
+  }
+
+  showError(text) {
+    let alert = this.toastCtrl.create({
+      message: text,
+      showCloseButton: true,
+      closeButtonText: 'Ok',
+      duration: 3000
+    });
+    alert.present();
   }
 
   editprofile(profile){

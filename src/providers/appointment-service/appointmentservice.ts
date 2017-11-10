@@ -40,8 +40,8 @@ export class AppointServiceProvider {
     //console.log('Hello AuthServiceProvider Provider');
   }
 
-  //private API = 'http://apps.artsinscience.com/ITGUY/api';
-  private API = 'http://localhost/ITGUY/api';
+  private API = 'http://apps.artsinscience.com/ITGUY/api';
+  //private API = 'http://localhost/ITGUY/api';
 
   public appointments(itguy, usermail) {
         return this.http.get(this.API+'/appointments?itguy='+itguy+'&usermail='+usermail)

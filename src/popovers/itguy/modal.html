@@ -20,10 +20,32 @@
       <h3>{{itguy.email}}</h3>
       <h3>{{itguy.phone}}</h3>
     </ion-item>
+    <hr/>
     <ion-item>
-      <ion-badge color="secondary"><ion-icon name="bulb"></ion-icon></ion-badge>
+      <h2>{{itguy.category}}</h2><hr/>
+      <ion-tags-input [(ngModel)]="tags" [readonly]="'true'" [once]="'true'" [mode]="'secondary'" [separatorStr]="','"></ion-tags-input>
     </ion-item>
   </ion-card>
+  <ion-card>
+<ion-grid>
+  <ion-row text-center>
+    <ion-col>
+    <ion-badge color="secondary"><h1><ion-icon name="bulb" color="light"></ion-icon></h1></ion-badge><br/> <small>5</small>
+  </ion-col>
+    <ion-col>
+    <ion-badge color="secondary" (click)="openreviews(reviews, itguy.rating)"><h1><ion-icon color="light" name="star"></ion-icon></h1></ion-badge><br/> <small>Reviews</small>
+  </ion-col>
+    <ion-col>
+      <ion-badge color="dark" (click)="newAppointment()"><h1><ion-icon color="light" name="calendar"></ion-icon></h1></ion-badge><br/> <small>Request</small>
+  </ion-col>
+    <ion-col>
+      <ion-badge color="dark" (click)="openChat()"><h1><ion-icon color="light" name="chatbubbles"></ion-icon></h1> </ion-badge><br/> <small>Chat</small>
+  </ion-col>
+  </ion-row>
+</ion-grid>
+</ion-card>
+
+
   <ion-card *ngIf="openreview">
       <ion-item class="newrate">
         <ion-avatar item-start>
@@ -88,6 +110,6 @@
     </ion-item>
     </ion-list>
   <ion-card>
-    <ion-card-header>TIPS/TRICKS</ion-card-header>
+    <ion-card-header>HACKS</ion-card-header>
   </ion-card>
 </ion-content>
